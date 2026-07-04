@@ -1,0 +1,423 @@
+{
+  "receiving_facility": "DM1",
+  "default_algorithm": "proportional",
+  "facilities": [
+    {
+      "facility_id": "DM2",
+      "priority": 1,
+      "active": true
+    },
+    {
+      "facility_id": "DM3",
+      "priority": 2,
+      "active": true
+    },
+    {
+      "facility_id": "DM4",
+      "priority": 3,
+      "active": true
+    },
+    {
+      "facility_id": "DM5",
+      "priority": 4,
+      "active": true
+    }
+  ],
+  "parts": [
+    {
+      "item_id": "1000012",
+      "pack_qty": null,
+      "pallet_qty": null,
+      "allow_split_pack": false,
+      "crossdock_preference": "full_pallet_first",
+      "min_order_qty": 1,
+      "over_max_tolerance": 0,
+      "default_algorithm": "proportional"
+    },
+    {
+      "item_id": "1000013",
+      "pack_qty": null,
+      "pallet_qty": null,
+      "allow_split_pack": false,
+      "crossdock_preference": "full_pallet_first",
+      "min_order_qty": 1,
+      "over_max_tolerance": 0,
+      "default_algorithm": "largest_shortage"
+    },
+    {
+      "item_id": "1000014",
+      "pack_qty": 5,
+      "pallet_qty": null,
+      "allow_split_pack": false,
+      "crossdock_preference": "balanced",
+      "min_order_qty": 1,
+      "over_max_tolerance": 5,
+      "default_algorithm": "proportional"
+    },
+    {
+      "item_id": "1000015",
+      "pack_qty": 5,
+      "pallet_qty": 100,
+      "allow_split_pack": false,
+      "crossdock_preference": "full_pallet_first",
+      "min_order_qty": 1,
+      "over_max_tolerance": 0,
+      "default_algorithm": "fixed_priority"
+    },
+    {
+      "item_id": "1000054",
+      "pack_qty": 5,
+      "pallet_qty": null,
+      "allow_split_pack": false,
+      "crossdock_preference": "full_pallet_first",
+      "min_order_qty": 1,
+      "over_max_tolerance": 0
+    },
+    {
+      "item_id": "1125145",
+      "pack_qty": 5,
+      "pallet_qty": null,
+      "allow_split_pack": false,
+      "crossdock_preference": "balanced",
+      "min_order_qty": 1,
+      "over_max_tolerance": 5,
+      "default_algorithm": "proportional"
+    },
+    {
+      "item_id": "3000011",
+      "pack_qty": null,
+      "pallet_qty": null,
+      "allow_split_pack": false,
+      "crossdock_preference": "balanced",
+      "min_order_qty": 1,
+      "over_max_tolerance": 0
+    },
+    {
+      "item_id": "3000014",
+      "pack_qty": null,
+      "pallet_qty": null,
+      "allow_split_pack": false,
+      "crossdock_preference": "balanced",
+      "min_order_qty": 1,
+      "over_max_tolerance": 0
+    }
+  ],
+  "facility_parts": [
+    {
+      "facility_id": "DM2",
+      "item_id": "1000012",
+      "max_qty": 100,
+      "available_qty": 70,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM3",
+      "item_id": "1000012",
+      "max_qty": 100,
+      "available_qty": 55,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM4",
+      "item_id": "1000012",
+      "max_qty": 100,
+      "available_qty": 65,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM5",
+      "item_id": "1000012",
+      "max_qty": 0,
+      "available_qty": 90,
+      "inbound_qty": 5,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM2",
+      "item_id": "1000013",
+      "max_qty": 100,
+      "available_qty": 87,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM3",
+      "item_id": "1000013",
+      "max_qty": 100,
+      "available_qty": 83,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM4",
+      "item_id": "1000013",
+      "max_qty": 100,
+      "available_qty": 53,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM5",
+      "item_id": "1000013",
+      "max_qty": 0,
+      "available_qty": 90,
+      "inbound_qty": 5,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM2",
+      "item_id": "1000014",
+      "max_qty": 100,
+      "available_qty": 85,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM3",
+      "item_id": "1000014",
+      "max_qty": 100,
+      "available_qty": 83,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM4",
+      "item_id": "1000014",
+      "max_qty": 100,
+      "available_qty": 80,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM5",
+      "item_id": "1000014",
+      "max_qty": 0,
+      "available_qty": 95,
+      "inbound_qty": 5,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM2",
+      "item_id": "1000015",
+      "max_qty": 200,
+      "available_qty": 85,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM3",
+      "item_id": "1000015",
+      "max_qty": 100,
+      "available_qty": 75,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM4",
+      "item_id": "1000015",
+      "max_qty": 100,
+      "available_qty": 77,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM5",
+      "item_id": "1000015",
+      "max_qty": 100,
+      "available_qty": 83,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM2",
+      "item_id": "1000054",
+      "max_qty": 100,
+      "available_qty": 55,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM3",
+      "item_id": "1000054",
+      "max_qty": 100,
+      "available_qty": 60,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM4",
+      "item_id": "1000054",
+      "max_qty": 100,
+      "available_qty": 65,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM5",
+      "item_id": "1000054",
+      "max_qty": 100,
+      "available_qty": 70,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM2",
+      "item_id": "1125145",
+      "max_qty": 100,
+      "available_qty": 85,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM3",
+      "item_id": "1125145",
+      "max_qty": 100,
+      "available_qty": 83,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM4",
+      "item_id": "1125145",
+      "max_qty": 100,
+      "available_qty": 80,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM5",
+      "item_id": "1125145",
+      "max_qty": 0,
+      "available_qty": 95,
+      "inbound_qty": 5,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM2",
+      "item_id": "3000011",
+      "max_qty": 100,
+      "available_qty": 50,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM3",
+      "item_id": "3000011",
+      "max_qty": 100,
+      "available_qty": 45,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM4",
+      "item_id": "3000011",
+      "max_qty": 100,
+      "available_qty": 55,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM5",
+      "item_id": "3000011",
+      "max_qty": 100,
+      "available_qty": 60,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM2",
+      "item_id": "3000014",
+      "max_qty": 100,
+      "available_qty": 40,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM3",
+      "item_id": "3000014",
+      "max_qty": 100,
+      "available_qty": 35,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM4",
+      "item_id": "3000014",
+      "max_qty": 100,
+      "available_qty": 45,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    },
+    {
+      "facility_id": "DM5",
+      "item_id": "3000014",
+      "max_qty": 100,
+      "available_qty": 50,
+      "inbound_qty": 10,
+      "outbound_qty": 5
+    }
+  ],
+  "asn_hints": {
+    "ASNFLOW001": {
+      "items": [
+        "1000012"
+      ],
+      "highlights": [
+        "proportional",
+        "fixed_priority",
+        "largest_shortage",
+        "weighted_score"
+      ],
+      "description": "ASN 50, shortages 25/40/30 — compare policies; weighted (col 4) gives DM4=0 (see ALLOCATION.md)"
+    },
+    "ASNFLOW002": {
+      "items": [
+        "1000013"
+      ],
+      "highlights": [
+        "proportional",
+        "fixed_priority",
+        "largest_shortage",
+        "weighted_score"
+      ],
+      "description": "ASN 60, shortages 8/12/42 — all 4 algos differ: 7/11/42 | 8/12/40 | 6/12/42 | 8/10/42"
+    },
+    "ASNFLOW003": {
+      "items": [
+        "1000014"
+      ],
+      "highlights": [
+        "proportional",
+        "fixed_priority",
+        "largest_shortage",
+        "weighted_score"
+      ],
+      "description": "Pack 5, ASN 25 (5 pk) \u2014 shortages 10/12/15; all 4 algos differ: 1/2/2pk | 2/2/1pk | 0/2/3pk | 2/0/3pk"
+    },
+    "ASNFLOW004": {
+      "items": [
+        "1000015"
+      ],
+      "highlights": [
+        "proportional",
+        "fixed_priority",
+        "default"
+      ],
+      "description": "Pack 5, pallet 100, ASN 135 \u2014 pallet crossdock + remainder; part default = fixed priority"
+    },
+    "ASNFLOW005": {
+      "items": [
+        "1125145",
+        "1000015"
+      ],
+      "highlights": [
+        "multi_line",
+        "default"
+      ],
+      "description": "Multi-line: line 1 item 1125145 qty 25 (same splits as ASNFLOW003) + line 2 item 1000015 qty 135 (pallet crossdock)"
+    }
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "description": "Replenishment orders for ASNFLOW005 (part defaults). One POST per facility.",
+  "endpoint": "POST https://salep.sce.manh.com/dcorder/api/dcorder/order",
+  "headers": {
+    "Authorization": "Bearer {{token}}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "FacilityId": "SS-DEMO-DM1",
+    "selectedOrganization": "SS-DEMO",
+    "selectedLocation": "SS-DEMO-DM1"
+  },
+  "field_notes": {
+    "PipelineId": "WAVE PIPELINE (order header and each OrderLine)",
+    "PipelineStatus": "1000 (each OrderLine)",
+    "PickupStartDateTime": "Set to now when order is created",
+    "PickupEndDateTime": "PickupStart + 1 calendar month",
+    "DeliveryStartDateTime": "PickupStart + 1 day",
+    "DeliveryEndDateTime": "PickupEnd + 1 day"
+  },
+  "orders": [
+    {
+      "label": "FLOW-ASNFLOW005-DM2",
+      "save_payload": {
+        "OrderId": "FLOW-ASNFLOW005-DM2",
+        "OriginFacilityId": "SS-DEMO-DM1",
+        "DestinationFacilityId": "SS-DEMO-DM2",
+        "OrderType": "Fast Flow",
+        "PipelineId": "WAVE PIPELINE",
+        "PickupStartDateTime": "2026-07-04T10:00:00",
+        "PickupEndDateTime": "2026-08-04T10:00:00",
+        "DeliveryStartDateTime": "2026-07-05T10:00:00",
+        "DeliveryEndDateTime": "2026-08-05T10:00:00",
+        "OrderLine": [
+          {
+            "OrderLineId": "1",
+            "ItemId": "1125145",
+            "OrderedQuantity": 5,
+            "QuantityUomId": "UNIT",
+            "PipelineId": "WAVE PIPELINE",
+            "PipelineStatus": "1000"
+          },
+          {
+            "OrderLineId": "2",
+            "ItemId": "1000015",
+            "OrderedQuantity": 110,
+            "QuantityUomId": "UNIT",
+            "PipelineId": "WAVE PIPELINE",
+            "PipelineStatus": "1000"
+          }
+        ]
+      }
+    },
+    {
+      "label": "FLOW-ASNFLOW005-DM3",
+      "save_payload": {
+        "OrderId": "FLOW-ASNFLOW005-DM3",
+        "OriginFacilityId": "SS-DEMO-DM1",
+        "DestinationFacilityId": "SS-DEMO-DM3",
+        "OrderType": "Fast Flow",
+        "PipelineId": "WAVE PIPELINE",
+        "PickupStartDateTime": "2026-07-04T10:00:00",
+        "PickupEndDateTime": "2026-08-04T10:00:00",
+        "DeliveryStartDateTime": "2026-07-05T10:00:00",
+        "DeliveryEndDateTime": "2026-08-05T10:00:00",
+        "OrderLine": [
+          {
+            "OrderLineId": "1",
+            "ItemId": "1125145",
+            "OrderedQuantity": 10,
+            "QuantityUomId": "UNIT",
+            "PipelineId": "WAVE PIPELINE",
+            "PipelineStatus": "1000"
+          },
+          {
+            "OrderLineId": "2",
+            "ItemId": "1000015",
+            "OrderedQuantity": 20,
+            "QuantityUomId": "UNIT",
+            "PipelineId": "WAVE PIPELINE",
+            "PipelineStatus": "1000"
+          }
+        ]
+      }
+    },
+    {
+      "label": "FLOW-ASNFLOW005-DM4",
+      "save_payload": {
+        "OrderId": "FLOW-ASNFLOW005-DM4",
+        "OriginFacilityId": "SS-DEMO-DM1",
+        "DestinationFacilityId": "SS-DEMO-DM4",
+        "OrderType": "Fast Flow",
+        "PipelineId": "WAVE PIPELINE",
+        "PickupStartDateTime": "2026-07-04T10:00:00",
+        "PickupEndDateTime": "2026-08-04T10:00:00",
+        "DeliveryStartDateTime": "2026-07-05T10:00:00",
+        "DeliveryEndDateTime": "2026-08-05T10:00:00",
+        "OrderLine": [
+          {
+            "OrderLineId": "1",
+            "ItemId": "1125145",
+            "OrderedQuantity": 10,
+            "QuantityUomId": "UNIT",
+            "PipelineId": "WAVE PIPELINE",
+            "PipelineStatus": "1000"
+          },
+          {
+            "OrderLineId": "2",
+            "ItemId": "1000015",
+            "OrderedQuantity": 5,
+            "QuantityUomId": "UNIT",
+            "PipelineId": "WAVE PIPELINE",
+            "PipelineStatus": "1000"
+          }
+        ]
+      }
+    }
+  ]
+}

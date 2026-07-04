@@ -1,0 +1,138 @@
+{
+  "api": {
+    "host": "https://salep.sce.manh.com",
+    "search_path": "/receiving/api/receiving/asn/search",
+    "save_path": "/receiving/api/receiving/asn/save",
+    "note": "Post each entry in asns[] individually — bulk save is not supported",
+    "search_payload_template": { "Query": "AsnId = '{{asn_id}}'" },
+    "list_filter": { "Query": "AsnId like 'ASNFLOW%'" }
+  },
+  "headers_template": {
+    "Content-Type": "application/json",
+    "selectedOrganization": "{{ORG}}",
+    "selectedLocation": "{{ORG}}-DM1"
+  },
+  "asns": [
+    {
+      "asn_id": "ASNFLOW001",
+      "item_id": "1000012",
+      "shipped_quantity": 50,
+      "highlights": ["proportional", "fixed_priority"],
+      "description": "Algorithms 1 & 2 — proportional vs fixed priority",
+      "save_payload": {
+        "AsnId": "ASNFLOW001",
+        "OrgId": "{{ORG}}",
+        "FacilityId": "{{ORG}}-DM1",
+        "DestinationFacilityId": "{{ORG}}-DM1",
+        "AsnLevelId": "ITEM",
+        "AsnOriginTypeId": "P",
+        "AsnLine": [
+          {
+            "AsnId": "ASNFLOW001",
+            "ItemId": "1000012",
+            "ShippedQuantity": 50,
+            "QuantityUomId": "UNIT"
+          }
+        ]
+      }
+    },
+    {
+      "asn_id": "ASNFLOW002",
+      "item_id": "1000013",
+      "shipped_quantity": 60,
+      "highlights": ["proportional", "fixed_priority", "largest_shortage", "weighted_score"],
+      "description": "ASN 60 — all 4 policies produce different splits (shortages 8/12/42)",
+      "save_payload": {
+        "AsnId": "ASNFLOW002",
+        "OrgId": "{{ORG}}",
+        "FacilityId": "{{ORG}}-DM1",
+        "DestinationFacilityId": "{{ORG}}-DM1",
+        "AsnLevelId": "ITEM",
+        "AsnOriginTypeId": "P",
+        "AsnLine": [
+          {
+            "AsnId": "ASNFLOW002",
+            "ItemId": "1000013",
+            "ShippedQuantity": 60,
+            "QuantityUomId": "UNIT"
+          }
+        ]
+      }
+    },
+    {
+      "asn_id": "ASNFLOW003",
+      "item_id": "1000014",
+      "shipped_quantity": 25,
+      "highlights": ["proportional", "fixed_priority", "largest_shortage", "weighted_score"],
+      "description": "Pack 5, ASN 25 — all 4 core algos produce different pack splits",
+      "save_payload": {
+        "AsnId": "ASNFLOW003",
+        "OrgId": "{{ORG}}",
+        "FacilityId": "{{ORG}}-DM1",
+        "DestinationFacilityId": "{{ORG}}-DM1",
+        "AsnLevelId": "ITEM",
+        "AsnOriginTypeId": "P",
+        "AsnLine": [
+          {
+            "AsnId": "ASNFLOW003",
+            "ItemId": "1000014",
+            "ShippedQuantity": 25,
+            "QuantityUomId": "UNIT"
+          }
+        ]
+      }
+    },
+    {
+      "asn_id": "ASNFLOW004",
+      "item_id": "1000015",
+      "shipped_quantity": 135,
+      "highlights": ["proportional", "fixed_priority", "default"],
+      "description": "Pack 5, pallet 100, ASN 135 — pallet crossdock + remainder by policy",
+      "save_payload": {
+        "AsnId": "ASNFLOW004",
+        "OrgId": "{{ORG}}",
+        "FacilityId": "{{ORG}}-DM1",
+        "DestinationFacilityId": "{{ORG}}-DM1",
+        "AsnLevelId": "ITEM",
+        "AsnOriginTypeId": "P",
+        "AsnLine": [
+          {
+            "AsnId": "ASNFLOW004",
+            "ItemId": "1000015",
+            "ShippedQuantity": 135,
+            "QuantityUomId": "UNIT"
+          }
+        ]
+      }
+    },
+    {
+      "asn_id": "ASNFLOW005",
+      "items": ["1125145", "1000015"],
+      "shipped_quantity": 160,
+      "highlights": ["multi_line", "default"],
+      "description": "Multi-line: 1125145 qty 25 (mirrors ASNFLOW003 splits) + 1000015 qty 135 (pallet crossdock)",
+      "save_payload": {
+        "AsnId": "ASNFLOW005",
+        "OrgId": "{{ORG}}",
+        "FacilityId": "{{ORG}}-DM1",
+        "DestinationFacilityId": "{{ORG}}-DM1",
+        "AsnLevelId": "ITEM",
+        "AsnOriginTypeId": "P",
+        "AsnLine": [
+          {
+            "AsnId": "ASNFLOW005",
+            "ItemId": "1125145",
+            "ShippedQuantity": 25,
+            "QuantityUomId": "UNIT"
+          },
+          {
+            "AsnId": "ASNFLOW005",
+            "ItemId": "1000015",
+            "ShippedQuantity": 135,
+            "QuantityUomId": "UNIT"
+          }
+        ]
+      }
+    }
+  ]
+}
