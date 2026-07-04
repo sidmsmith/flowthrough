@@ -294,7 +294,9 @@ async function loadAsn(skipPrompt) {
     lines: res.lines,
     receivingFacility: res.receivingFacility,
   };
-  selections = defaultSelections(res.lines);
+  const nextSelections = defaultSelections(res.lines);
+  Object.keys(selections).forEach((k) => delete selections[k]);
+  Object.assign(selections, nextSelections);
   asnInput.value = res.asn.asnId;
 
   document.getElementById("asnMeta").innerHTML = renderAsnMeta(res.asn);

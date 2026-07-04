@@ -195,7 +195,9 @@ function renderLinePanel(line, selectedKey, idPrefix) {
 function bindLineSelectors(container, selections, onChange) {
   container.querySelectorAll(".algo-select").forEach((sel) => {
     sel.addEventListener("change", () => {
-      selections[sel.dataset.line] = sel.value;
+      const lineNum = parseInt(sel.dataset.line, 10);
+      if (!lineNum) return;
+      selections[lineNum] = sel.value;
       onChange();
     });
   });
@@ -205,7 +207,7 @@ function bindAlgoColumnPick(container, selections, onChange) {
   if (!container || container.dataset.algoPickBound) return;
   container.dataset.algoPickBound = "1";
   const applyAlgo = (linePanel, algoKey) => {
-    const lineNum = linePanel?.dataset.line;
+    const lineNum = parseInt(linePanel?.dataset.line, 10);
     if (!lineNum || !algoKey || selections[lineNum] === algoKey) return;
     selections[lineNum] = algoKey;
     onChange();
@@ -244,12 +246,18 @@ function defaultSelections(lines) {
   return s;
 }
 
+function pluralWord(n, singular, plural = `${singular}s`) {
+  return n === 1 ? singular : plural;
+}
+
 function updateFooterSummary(selections, orderCount) {
   const el = document.getElementById("footerSummary");
   if (!el) return;
   const lines = getAsnLines();
   const count = orderCount ?? countFacilityOrders(lines, selections);
-  el.textContent = `${lines.length} lines · ${count} order(s) on Create (based on selected algorithms)`;
+  const lineLabel = pluralWord(lines.length, "line");
+  const orderLabel = pluralWord(count, "order");
+  el.textContent = `${lines.length} ${lineLabel} · ${count} ${orderLabel} on Create (based on selected algorithms)`;
 }
 
 function formatAsnStatus(code) {
