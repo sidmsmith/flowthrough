@@ -368,7 +368,7 @@ function renderModals() {
   </div>`;
 }
 
-function manhOrdersScreenUrl() {
+function manhOrdersScreenUrl(orderIds) {
   const org = window.APP_STATE?.org || "";
   const location = window.APP_STATE?.location || (org ? `${org}-DM1` : "");
   const params = new URLSearchParams({
@@ -376,6 +376,9 @@ function manhOrdersScreenUrl() {
     M_Organization: org,
     M_Location: location,
   });
+  if (orderIds?.length) {
+    params.set("OrderId", orderIds.join(","));
+  }
   return `https://salep.sce.manh.com/udc/dm/linkTo?${params.toString()}`;
 }
 
@@ -402,11 +405,14 @@ function showResultsModal(message, orders) {
   }
   const viewBtn = document.getElementById("viewOrdersBtn");
   if (viewBtn) {
-    const successfulIds = new Set(
-      (orders || []).filter((o) => o.success !== false && o.status === "OK").map((o) => o.orderId)
-    );
-    if (successfulIds.size > 1) {
-      viewBtn.href = manhOrdersScreenUrl();
+    const successfulIds = [
+      ...new Set(
+        (orders || []).filter((o) => o.success !== false && o.status === "OK").map((o) => o.orderId)
+      ),
+    ].filter(Boolean);
+    if (successfulIds.length >= 1) {
+      viewBtn.href = manhOrdersScreenUrl(successfulIds);
+      viewBtn.textContent = successfulIds.length === 1 ? "View Order" : "View Orders";
       viewBtn.classList.remove("hidden");
     } else {
       viewBtn.href = "#";
