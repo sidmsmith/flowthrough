@@ -57,7 +57,7 @@ async function api(action, body, showStatus = false) {
       result.error = result.error || `HTTP ${res.status}`;
     }
     if (showStatus && !result.success) {
-      status(result.error || "Request failed", "error");
+      status(result.error || result.message || "Request failed", "error");
     }
     return result;
   } catch (e) {
@@ -342,16 +342,46 @@ async function confirmCreateOrders() {
       location: getLocation(),
       selections: selectionsPayload(selections),
     },
-    true
+    false
   );
   createBtn.disabled = false;
 
+  const orders = res.orders || [];
+  if (orders.length > 0) {
+    const allOk = !!res.success;
+    const partial = !allOk && (res.orderCount || 0) > 0;
+    status(
+      res.message ||
+        (allOk
+          ? res.orderCount === 1
+            ? "Order created"
+            : "Orders created"
+          : partial
+            ? "Some orders failed"
+            : "Order creation failed"),
+      allOk ? "success" : "error"
+    );
+    const eventPayload = {
+      org: getOrg(),
+      asn_id: asn.asnId,
+      order_count: res.orderCount || 0,
+      duration_ms: Date.now() - start,
+    };
+    if (allOk || partial) {
+      await trackEvent("create_orders_completed", { ...eventPayload, had_failures: !allOk });
+    } else {
+      await trackEvent("create_orders_failed", { ...eventPayload, error: res.message || res.error });
+    }
+    showResultsModal(res.message, orders);
+    return;
+  }
+
   if (!res.success) {
-    status(res.error || "Order creation failed", "error");
+    status(res.error || res.message || "Order creation failed", "error");
     await trackEvent("create_orders_failed", {
       org: getOrg(),
       asn_id: asn.asnId,
-      error: res.error,
+      error: res.error || res.message,
       duration_ms: Date.now() - start,
     });
     return;
@@ -364,7 +394,7 @@ async function confirmCreateOrders() {
     order_count: res.orderCount,
     duration_ms: Date.now() - start,
   });
-  showResultsModal(res.message, res.orders);
+  showResultsModal(res.message, orders);
 }
 
 function bindCreateFlow() {

@@ -305,10 +305,21 @@ def create_orders(
             )
 
     ok_orders = len({r["orderId"] for r in results if r["success"]})
+    failed_orders = len({r["orderId"] for r in results if not r["success"]})
     order_word = "order" if ok_orders == 1 else "orders"
+    fail_word = "order" if failed_orders == 1 else "orders"
+    if ok_orders == 0 and failed_orders:
+        message = f"No replenishment orders were created for ASN {asn_id}. {failed_orders} {fail_word} failed."
+    elif failed_orders:
+        message = (
+            f"Created {ok_orders} replenishment {order_word} for ASN {asn_id}. "
+            f"{failed_orders} {fail_word} failed."
+        )
+    else:
+        message = f"Created {ok_orders} replenishment {order_word} for ASN {asn_id}."
     return {
         "success": all(r["success"] for r in results) if results else True,
         "orderCount": ok_orders,
         "orders": results,
-        "message": f"Created {ok_orders} replenishment {order_word} for ASN {asn_id}.",
+        "message": message,
     }

@@ -382,11 +382,21 @@ function showResultsModal(message, orders) {
       <td class="${ok ? "result-ok" : "text-danger"}"><i class="fa-solid fa-${ok ? "circle-check" : "circle-xmark"}"></i> ${o.status}</td>
     </tr>`;
   });
-  document.getElementById("resultsSummary").textContent = message || "";
+  const summaryEl = document.getElementById("resultsSummary");
+  if (summaryEl) {
+    summaryEl.textContent = message || "";
+    const anyFailed = (orders || []).some((o) => o.success === false || o.status === "FAILED");
+    summaryEl.classList.toggle("text-danger", anyFailed);
+    summaryEl.classList.toggle("text-success", !anyFailed && orders.length > 0);
+  }
   const viewBtn = document.getElementById("viewOrdersBtn");
   if (viewBtn) {
-    const orderCount = new Set((orders || []).map((o) => o.orderId)).size;
-    viewBtn.textContent = orderCount === 1 ? "View Order" : "View Orders";
+    const successfulIds = new Set(
+      (orders || []).filter((o) => o.success !== false && o.status === "OK").map((o) => o.orderId)
+    );
+    const n = successfulIds.size;
+    viewBtn.textContent = n === 1 ? "View Order" : "View Orders";
+    viewBtn.disabled = n === 0;
   }
   new bootstrap.Modal(document.getElementById("resultsModal")).show();
 }
