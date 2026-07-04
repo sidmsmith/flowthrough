@@ -278,7 +278,9 @@ def create_orders(
 
     origin = plan["receivingFacility"]
     results = []
-    for dest, lines in facility_orders.items():
+    sorted_dests = sorted(facility_orders.keys(), key=lambda dest: build_order_id(asn_id, dest))
+    for dest in sorted_dests:
+        lines = facility_orders[dest]
         order_result = save_facility_order(
             token,
             org,

@@ -443,14 +443,16 @@ function showResultsModal(message, orders) {
   if (!tbody) return;
   disposeResultsTooltips();
   tbody.innerHTML = "";
-  aggregateOrderResults(orders).forEach((order) => {
+  aggregateOrderResults(orders)
+    .sort((a, b) => a.orderId.localeCompare(b.orderId))
+    .forEach((order) => {
     const ok = order.success !== false && order.status === "OK";
     tbody.innerHTML += `<tr>
       <td>${escapeHtml(order.orderId)}</td>
       <td>${escapeHtml(order.destination)}</td>
       <td>${renderResultsItemCell(order.lines)}</td>
       <td>${order.lines.length}</td>
-      <td class="${ok ? "result-ok" : "text-danger"}"><i class="fa-solid fa-${ok ? "circle-check" : "circle-xmark"}"></i> ${escapeHtml(order.status)}</td>
+      <td class="result-status-cell ${ok ? "result-ok" : "result-fail"}"><i class="fa-solid fa-${ok ? "circle-check" : "circle-xmark"}"></i> ${escapeHtml(order.status)}</td>
     </tr>`;
   });
   initResultsTooltips();

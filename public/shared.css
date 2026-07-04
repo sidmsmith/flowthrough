@@ -559,6 +559,20 @@ table.ft-table th.col-selected-h {
 .hidden { display: none !important; }
 
 .result-ok { color: #86efac; }
+.result-fail { color: #f87171; }
+
+.result-status-cell {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.result-status-cell.result-ok .fa-circle-check {
+  color: #22c55e;
+}
+
+.result-status-cell.result-fail .fa-circle-xmark {
+  color: #ef4444;
+}
 
 .mixed-item-label {
   cursor: help;
@@ -574,7 +588,6 @@ table.ft-table th.col-selected-h {
   line-height: 1.55;
   text-align: left;
 }
-.result-fail { color: #fca5a5; }
 
 .line-nav-item .small { color: var(--text-muted) !important; }
 .line-nav-item strong { color: var(--text); }
