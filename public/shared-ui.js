@@ -360,12 +360,23 @@ function renderModals() {
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-primary" id="viewOrdersBtn">View Orders</button>
+          <a class="btn btn-outline-primary hidden" id="viewOrdersBtn" href="#" target="_blank" rel="noopener noreferrer">View Orders</a>
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
   </div>`;
+}
+
+function manhOrdersScreenUrl() {
+  const org = window.APP_STATE?.org || "";
+  const location = window.APP_STATE?.location || (org ? `${org}-DM1` : "");
+  const params = new URLSearchParams({
+    M_Screen: "orders",
+    M_Organization: org,
+    M_Location: location,
+  });
+  return `https://salep.sce.manh.com/udc/dm/linkTo?${params.toString()}`;
 }
 
 function showResultsModal(message, orders) {
@@ -394,9 +405,13 @@ function showResultsModal(message, orders) {
     const successfulIds = new Set(
       (orders || []).filter((o) => o.success !== false && o.status === "OK").map((o) => o.orderId)
     );
-    const n = successfulIds.size;
-    viewBtn.textContent = n === 1 ? "View Order" : "View Orders";
-    viewBtn.disabled = n === 0;
+    if (successfulIds.size > 1) {
+      viewBtn.href = manhOrdersScreenUrl();
+      viewBtn.classList.remove("hidden");
+    } else {
+      viewBtn.href = "#";
+      viewBtn.classList.add("hidden");
+    }
   }
   new bootstrap.Modal(document.getElementById("resultsModal")).show();
 }
