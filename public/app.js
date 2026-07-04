@@ -142,6 +142,8 @@ function refreshStacked() {
 
 function renderNav() {
   const lines = getAsnLines();
+  const heading = document.getElementById("lineNavHeading");
+  if (heading) heading.textContent = `ASN lines (${lines.length})`;
   document.getElementById("lineNav").innerHTML = lines
     .map((line) => {
       const algo = selections[line.lineNum];
@@ -161,7 +163,6 @@ function renderNav() {
       renderDetail();
     });
   });
-  document.getElementById("navSummary").textContent = `${lines.length} ${pluralWord(lines.length, "line")}`;
 }
 
 function renderDetail() {

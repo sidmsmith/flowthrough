@@ -263,7 +263,11 @@ function updateConfirmModalCopy(orderCount, lineCount) {
   if (bodyEl) {
     const orderLabel = pluralWord(orderCount, "replenishment order");
     const lineLabel = pluralWord(lineCount, "ASN line");
-    bodyEl.innerHTML = `This process will create <strong>${orderCount}</strong> ${orderLabel} across all ${lineCount} ${lineLabel}.`;
+    const linePhrase =
+      lineCount === 1
+        ? `for ${lineCount} ${lineLabel}`
+        : `across all ${lineCount} ${lineLabel}`;
+    bodyEl.innerHTML = `This process will create <strong>${orderCount}</strong> ${orderLabel} ${linePhrase}.`;
   }
   if (confirmBtn) {
     confirmBtn.textContent = orderCount === 1 ? "Yes, create order" : "Yes, create orders";

@@ -105,26 +105,30 @@ body.footer-visible .app-shell {
   padding: 1rem 1.25rem;
   display: flex;
   align-items: flex-end;
-  gap: 1rem;
+  gap: 1.25rem;
   flex-wrap: wrap;
   margin-bottom: 1rem;
 }
 
 .asn-bar .field { flex: 0 0 280px; }
-.asn-bar .meta { flex: 1; min-width: 320px; }
+.asn-bar .meta {
+  flex: 1 1 360px;
+  min-width: 0;
+}
 
 .asn-meta-fields {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem 1.75rem;
-  align-items: flex-end;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem 1.5rem;
+  align-items: end;
+  width: 100%;
 }
 
 .asn-meta-item {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  min-width: 7rem;
+  min-width: 0;
 }
 
 .asn-meta-item .form-label {
