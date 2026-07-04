@@ -7,7 +7,7 @@ window.APP_STATE = {
   asnData: null,
 };
 
-const APP_VERSION = "0.1.2";
+const APP_VERSION = "0.0.1";
 const VIEW_KEY = "flowthrough-view";
 const sessionId = `sess_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
 const pageLoadTime = new Date().toISOString();
@@ -33,6 +33,7 @@ let createBtn;
 let footerActions;
 
 function status(msg, type) {
+  if (!statusEl) return;
   statusEl.textContent = msg;
   statusEl.className = "status " + (type === "error" ? "text-danger" : type === "success" ? "text-success" : "");
 }
@@ -469,4 +470,6 @@ window.addEventListener("load", async () => {
     }
   } else {
     orgInput.value = "";
-    o
+    orgInput.focus();
+  }
+});
