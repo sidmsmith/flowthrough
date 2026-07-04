@@ -34,7 +34,11 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  padding: 0 1.25rem 5rem;
+  padding: 0 1.25rem 1.5rem;
+}
+
+body.footer-visible .app-shell {
+  padding-bottom: 5rem;
 }
 
 .app-header {
@@ -44,7 +48,6 @@ body {
   text-align: center;
   position: relative;
   padding: 1rem 0 0.75rem;
-  border-bottom: 1px solid var(--border);
   margin-bottom: 1rem;
 }
 

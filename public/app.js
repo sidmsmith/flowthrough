@@ -7,7 +7,7 @@ window.APP_STATE = {
   asnData: null,
 };
 
-const APP_VERSION = "1.0.0";
+const APP_VERSION = "0.1.2";
 const VIEW_KEY = "flowthrough-view";
 const sessionId = `sess_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
 const pageLoadTime = new Date().toISOString();
@@ -30,6 +30,7 @@ let linesContainer;
 let detailPane;
 let viewSelect;
 let createBtn;
+let footerActions;
 
 function status(msg, type) {
   statusEl.textContent = msg;
@@ -276,6 +277,8 @@ async function loadAsn(skipPrompt) {
   loadBtn.disabled = false;
 
   if (!res.success) {
+    setFooterVisible(false);
+    asnLoaded = false;
     await trackEvent("load_asn_failed", {
       org: getOrg(),
       asn_id: asnId,
@@ -299,6 +302,7 @@ async function loadAsn(skipPrompt) {
   createBtn.disabled = false;
   asnLoaded = true;
   activeLine = 1;
+  setFooterVisible(true);
 
   await refreshPreviewCount();
   refreshActiveView();
@@ -389,6 +393,13 @@ function bindDomRefs() {
   detailPane = document.getElementById("detailPane");
   viewSelect = document.getElementById("viewSelect");
   createBtn = document.getElementById("createBtn");
+  footerActions = document.getElementById("footerActions");
+}
+
+function setFooterVisible(visible) {
+  if (!footerActions) return;
+  footerActions.classList.toggle("hidden", !visible);
+  document.body.classList.toggle("footer-visible", visible);
 }
 
 function initApp() {
@@ -419,6 +430,7 @@ function initApp() {
   });
 
   mainUI.style.display = "none";
+  setFooterVisible(false);
 }
 
 window.addEventListener("load", async () => {
@@ -457,6 +469,4 @@ window.addEventListener("load", async () => {
     }
   } else {
     orgInput.value = "";
-    orgInput.focus();
-  }
-});
+    o
