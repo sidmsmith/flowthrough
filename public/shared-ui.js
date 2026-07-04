@@ -229,10 +229,10 @@ function bindAlgoColumnPick(container, selections, onChange) {
 function countFacilityOrders(lines, selections) {
   const facilities = new Set();
   lines.forEach((line) => {
-    const algo = selections[line.lineNum] || line.defaultAlgo;
+    const algo = selections[line.lineNum] || selections[String(line.lineNum)] || line.defaultAlgo;
     const units = line.units[algo] || {};
     Object.entries(units).forEach(([fac, qty]) => {
-      if (qty > 0) facilities.add(fac);
+      if (Number(qty) > 0) facilities.add(fac);
     });
   });
   return facilities.size;
@@ -270,11 +270,11 @@ function updateConfirmModalCopy(orderCount, lineCount) {
   }
 }
 
-function updateFooterSummary(selections, orderCount) {
+function updateFooterSummary(selections, orderCount = null) {
   const el = document.getElementById("footerSummary");
   if (!el) return;
   const lines = getAsnLines();
-  const count = orderCount ?? countFacilityOrders(lines, selections);
+  const count = orderCount !== null ? orderCount : countFacilityOrders(lines, selections);
   const lineLabel = pluralWord(lines.length, "line");
   const orderLabel = pluralWord(count, "order");
   el.textContent = `${lines.length} ${lineLabel} · ${count} ${orderLabel} on Create (based on selected algorithms)`;

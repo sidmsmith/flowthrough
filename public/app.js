@@ -17,6 +17,7 @@ let selections = {};
 let activeLine = 1;
 let asnLoaded = false;
 let previewOrderCount = 0;
+let previewCountSeq = 0;
 
 let orgInput;
 let authBtn;
@@ -136,7 +137,7 @@ function refreshStacked() {
   const lines = getAsnLines();
   linesContainer.innerHTML = lines.map((line) => renderLinePanel(line, selections[line.lineNum], "a")).join("");
   bindLineSelectors(linesContainer, selections, onSelectionsChange);
-  updateFooterSummary(selections, previewOrderCount);
+  updateFooterSummary(selections);
 }
 
 function renderNav() {
@@ -167,17 +168,13 @@ function renderDetail() {
   const line = getAsnLines().find((l) => l.lineNum === activeLine);
   if (!line) return;
   detailPane.innerHTML = renderLinePanel(line, selections[line.lineNum], "a-md");
-  bindLineSelectors(detailPane, selections, () => {
-    renderNav();
-    renderDetail();
-    onSelectionsChange();
-  });
+  bindLineSelectors(detailPane, selections, onSelectionsChange);
 }
 
 function refreshMainDetail() {
   renderNav();
   renderDetail();
-  updateFooterSummary(selections, previewOrderCount);
+  updateFooterSummary(selections);
 }
 
 function refreshActiveView() {
@@ -189,6 +186,7 @@ async function refreshPreviewCount() {
   if (!asnLoaded || !window.APP_STATE.token) return;
   const asn = getAsnData()?.asn;
   if (!asn?.asnId) return;
+  const requestId = ++previewCountSeq;
   const res = await api(
     "preview_orders",
     {
@@ -200,11 +198,14 @@ async function refreshPreviewCount() {
     },
     false
   );
-  previewOrderCount = res.success ? res.orderCount || 0 : 0;
+  if (requestId !== previewCountSeq) return;
+  const lines = getAsnLines();
+  previewOrderCount = res.success ? res.orderCount ?? countFacilityOrders(lines, selections) : countFacilityOrders(lines, selections);
   updateFooterSummary(selections, previewOrderCount);
 }
 
 function onSelectionsChange() {
+  updateFooterSummary(selections);
   refreshActiveView();
   refreshPreviewCount();
 }
