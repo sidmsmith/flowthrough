@@ -354,13 +354,13 @@ function renderModals() {
           <p id="resultsSummary" class="fw-semibold"></p>
           <div class="table-wrap">
             <table class="ft-table">
-              <thead><tr><th>Order Id</th><th>Destination</th><th>Item</th><th>Qty</th><th>Status</th></tr></thead>
+              <thead><tr><th>Order Id</th><th>Destination</th><th>Item</th><th>Lines</th><th>Status</th></tr></thead>
               <tbody id="resultsTableBody"></tbody>
             </table>
           </div>
         </div>
         <div class="modal-footer">
-          <a class="btn btn-outline-primary hidden" id="viewOrdersBtn" href="#" target="_blank" rel="noopener noreferrer">View Orders</a>
+          <a class="btn btn-primary hidden" id="viewOrdersBtn" href="#" target="_blank" rel="noopener noreferrer">View Orders</a>
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
@@ -382,20 +382,78 @@ function manhOrdersScreenUrl(orderIds) {
   return `https://salep.sce.manh.com/udc/dm/linkTo?${params.toString()}`;
 }
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function aggregateOrderResults(orders) {
+  const byOrder = new Map();
+  (orders || []).forEach((o) => {
+    if (!byOrder.has(o.orderId)) {
+      byOrder.set(o.orderId, {
+        orderId: o.orderId,
+        destination: o.destination,
+        lines: [],
+        success: o.success,
+        status: o.status,
+      });
+    }
+    byOrder.get(o.orderId).lines.push({
+      itemId: o.itemId,
+      qty: o.qty,
+      uom: o.uom,
+    });
+  });
+  return [...byOrder.values()];
+}
+
+function renderResultsItemCell(lines) {
+  if (lines.length === 1) {
+    return escapeHtml(lines[0].itemId);
+  }
+  const tipHtml = lines
+    .map((l) => `${escapeHtml(l.itemId)} — ${escapeHtml(l.qty)} ${escapeHtml(l.uom || "")}`)
+    .join("<br>");
+  return `<span class="mixed-item-label" tabindex="0" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="${tipHtml}">MIXED</span>`;
+}
+
+function disposeResultsTooltips() {
+  document.querySelectorAll("#resultsTableBody .mixed-item-label").forEach((el) => {
+    bootstrap.Tooltip.getInstance(el)?.dispose();
+  });
+}
+
+function initResultsTooltips() {
+  document.querySelectorAll("#resultsTableBody .mixed-item-label").forEach((el) => {
+    new bootstrap.Tooltip(el, {
+      html: true,
+      customClass: "mixed-items-tooltip",
+      container: "body",
+      boundary: "viewport",
+    });
+  });
+}
+
 function showResultsModal(message, orders) {
   const tbody = document.getElementById("resultsTableBody");
   if (!tbody) return;
+  disposeResultsTooltips();
   tbody.innerHTML = "";
-  (orders || []).forEach((o) => {
-    const ok = o.success !== false && o.status === "OK";
+  aggregateOrderResults(orders).forEach((order) => {
+    const ok = order.success !== false && order.status === "OK";
     tbody.innerHTML += `<tr>
-      <td>${o.orderId}</td>
-      <td>${o.destination}</td>
-      <td>${o.itemId}</td>
-      <td>${o.qty}</td>
-      <td class="${ok ? "result-ok" : "text-danger"}"><i class="fa-solid fa-${ok ? "circle-check" : "circle-xmark"}"></i> ${o.status}</td>
+      <td>${escapeHtml(order.orderId)}</td>
+      <td>${escapeHtml(order.destination)}</td>
+      <td>${renderResultsItemCell(order.lines)}</td>
+      <td>${order.lines.length}</td>
+      <td class="${ok ? "result-ok" : "text-danger"}"><i class="fa-solid fa-${ok ? "circle-check" : "circle-xmark"}"></i> ${escapeHtml(order.status)}</td>
     </tr>`;
   });
+  initResultsTooltips();
   const summaryEl = document.getElementById("resultsSummary");
   if (summaryEl) {
     summaryEl.textContent = message || "";

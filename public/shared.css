@@ -559,6 +559,21 @@ table.ft-table th.col-selected-h {
 .hidden { display: none !important; }
 
 .result-ok { color: #86efac; }
+
+.mixed-item-label {
+  cursor: help;
+  font-weight: 600;
+  text-decoration: underline dotted;
+  text-underline-offset: 0.15em;
+}
+
+.tooltip.mixed-items-tooltip .tooltip-inner {
+  max-width: min(420px, 90vw);
+  padding: 0.85rem 1rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  text-align: left;
+}
 .result-fail { color: #fca5a5; }
 
 .line-nav-item .small { color: var(--text-muted) !important; }
