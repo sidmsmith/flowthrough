@@ -18,18 +18,18 @@ let activeLine = 1;
 let asnLoaded = false;
 let previewOrderCount = 0;
 
-const orgInput = document.getElementById("org");
-const authBtn = document.getElementById("authBtn");
-const orgSection = document.getElementById("orgSection");
-const mainUI = document.getElementById("mainUI");
-const statusEl = document.getElementById("status");
-const asnInput = document.getElementById("asnInput");
-const loadBtn = document.getElementById("loadBtn");
-const previewWrapper = document.getElementById("previewWrapper");
-const linesContainer = document.getElementById("linesContainer");
-const detailPane = document.getElementById("detailPane");
-const viewSelect = document.getElementById("viewSelect");
-const createBtn = document.getElementById("createBtn");
+let orgInput;
+let authBtn;
+let orgSection;
+let mainUI;
+let statusEl;
+let asnInput;
+let loadBtn;
+let previewWrapper;
+let linesContainer;
+let detailPane;
+let viewSelect;
+let createBtn;
 
 function status(msg, type) {
   statusEl.textContent = msg;
@@ -376,7 +376,27 @@ function bindCreateFlow() {
   });
 }
 
+function bindDomRefs() {
+  orgInput = document.getElementById("org");
+  authBtn = document.getElementById("authBtn");
+  orgSection = document.getElementById("orgSection");
+  mainUI = document.getElementById("mainUI");
+  statusEl = document.getElementById("status");
+  asnInput = document.getElementById("asnInput");
+  loadBtn = document.getElementById("loadBtn");
+  previewWrapper = document.getElementById("previewWrapper");
+  linesContainer = document.getElementById("linesContainer");
+  detailPane = document.getElementById("detailPane");
+  viewSelect = document.getElementById("viewSelect");
+  createBtn = document.getElementById("createBtn");
+}
+
 function initApp() {
+  bindDomRefs();
+  if (!orgInput || !authBtn || !statusEl) {
+    throw new Error("Required DOM elements missing");
+  }
+
   document.getElementById("modalsHost").innerHTML = renderModals();
   bindCreateFlow();
 
@@ -402,7 +422,18 @@ function initApp() {
 }
 
 window.addEventListener("load", async () => {
-  initApp();
+  try {
+    initApp();
+  } catch (e) {
+    console.error(e);
+    const el = document.getElementById("status");
+    if (el) {
+      el.textContent = "Failed to initialize app: " + e.message;
+      el.className = "status text-danger";
+    }
+    return;
+  }
+
   const params = getUrlParams();
   await trackEvent("app_opened", { has_url_params: params.toString().length > 0 });
 

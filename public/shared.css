@@ -160,8 +160,14 @@ body {
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1rem 1.25rem;
-  margin-bottom: 1rem;
+  margin: 0 auto 1rem;
   max-width: 480px;
+}
+
+.auth-section .status {
+  color: var(--text);
+  font-weight: 600;
+  min-height: 1.5rem;
 }
 
 .auth-row {

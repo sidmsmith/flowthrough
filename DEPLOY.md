@@ -54,9 +54,10 @@ Events sent to the apps dashboard when `MANHATTAN_USAGE_INGEST_URL` is set:
 ```
 flowthrough/
 ├── index.html
-├── app.js
-├── shared-ui.js
-├── shared.css
+├── public/
+│   ├── app.js
+│   ├── shared-ui.js
+│   └── shared.css
 ├── api/index.py
 ├── allocation/
 ├── data/facility_inventory.json
