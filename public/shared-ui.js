@@ -250,6 +250,26 @@ function pluralWord(n, singular, plural = `${singular}s`) {
   return n === 1 ? singular : plural;
 }
 
+function updateCreateButtonLabel(orderCount) {
+  const btn = document.getElementById("createBtn");
+  if (!btn) return;
+  const label = orderCount === 1 ? "Create Order" : "Create Orders";
+  btn.innerHTML = `<i class="fa-solid fa-file-circle-plus"></i> ${label}`;
+}
+
+function updateConfirmModalCopy(orderCount, lineCount) {
+  const bodyEl = document.getElementById("confirmModalBody");
+  const confirmBtn = document.getElementById("confirmCreateBtn");
+  if (bodyEl) {
+    const orderLabel = pluralWord(orderCount, "replenishment order");
+    const lineLabel = pluralWord(lineCount, "ASN line");
+    bodyEl.innerHTML = `This process will create <strong>${orderCount}</strong> ${orderLabel} across all ${lineCount} ${lineLabel}.`;
+  }
+  if (confirmBtn) {
+    confirmBtn.textContent = orderCount === 1 ? "Yes, create order" : "Yes, create orders";
+  }
+}
+
 function updateFooterSummary(selections, orderCount) {
   const el = document.getElementById("footerSummary");
   if (!el) return;
@@ -258,6 +278,7 @@ function updateFooterSummary(selections, orderCount) {
   const lineLabel = pluralWord(lines.length, "line");
   const orderLabel = pluralWord(count, "order");
   el.textContent = `${lines.length} ${lineLabel} · ${count} ${orderLabel} on Create (based on selected algorithms)`;
+  updateCreateButtonLabel(count);
 }
 
 function formatAsnStatus(code) {
@@ -312,7 +333,7 @@ function renderModals() {
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <p>This process will create <strong id="confirmOrderCount">0</strong> replenishment order(s) across all ASN lines.</p>
+          <p id="confirmModalBody">This process will create <strong>0</strong> replenishment orders across all 0 ASN lines.</p>
           <p class="text-muted mb-0">Do you wish to continue?</p>
         </div>
         <div class="modal-footer">
@@ -339,6 +360,7 @@ function renderModals() {
           </div>
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn btn-outline-primary" id="viewOrdersBtn">View Orders</button>
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
@@ -361,6 +383,11 @@ function showResultsModal(message, orders) {
     </tr>`;
   });
   document.getElementById("resultsSummary").textContent = message || "";
+  const viewBtn = document.getElementById("viewOrdersBtn");
+  if (viewBtn) {
+    const orderCount = new Set((orders || []).map((o) => o.orderId)).size;
+    viewBtn.textContent = orderCount === 1 ? "View Order" : "View Orders";
+  }
   new bootstrap.Modal(document.getElementById("resultsModal")).show();
 }
 

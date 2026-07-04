@@ -305,9 +305,10 @@ def create_orders(
             )
 
     ok_orders = len({r["orderId"] for r in results if r["success"]})
+    order_word = "order" if ok_orders == 1 else "orders"
     return {
         "success": all(r["success"] for r in results) if results else True,
         "orderCount": ok_orders,
         "orders": results,
-        "message": f"Created {ok_orders} replenishment order(s) for ASN {asn_id}.",
+        "message": f"Created {ok_orders} replenishment {order_word} for ASN {asn_id}.",
     }

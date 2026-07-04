@@ -160,7 +160,7 @@ function renderNav() {
       renderDetail();
     });
   });
-  document.getElementById("navSummary").textContent = `Lines: ${lines.length}`;
+  document.getElementById("navSummary").textContent = `${lines.length} ${pluralWord(lines.length, "line")}`;
 }
 
 function renderDetail() {
@@ -332,7 +332,7 @@ async function confirmCreateOrders() {
   });
 
   createBtn.disabled = true;
-  status("Creating orders...");
+  status(previewOrderCount === 1 ? "Creating order..." : "Creating orders...");
   const res = await api(
     "create_orders",
     {
@@ -357,7 +357,7 @@ async function confirmCreateOrders() {
     return;
   }
 
-  status(res.message || "Orders created", "success");
+  status(res.message || (res.orderCount === 1 ? "Order created" : "Orders created"), "success");
   await trackEvent("create_orders_completed", {
     org: getOrg(),
     asn_id: asn.asnId,
@@ -373,7 +373,7 @@ function bindCreateFlow() {
       status("Load an ASN first", "error");
       return;
     }
-    document.getElementById("confirmOrderCount").textContent = previewOrderCount;
+    updateConfirmModalCopy(previewOrderCount, getAsnLines().length);
     new bootstrap.Modal(document.getElementById("confirmModal")).show();
   });
 
