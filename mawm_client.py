@@ -22,6 +22,7 @@ ITEM_SEARCH_URL = f"{HOST}/item-master/api/item-master/item/search"
 ORDER_SAVE_URL = f"{HOST}/dcorder/api/dcorder/order"
 ORDER_SEARCH_URL = f"{HOST}/dcorder/api/dcorder/order/search"
 ORDER_TYPE = "Fast Flow"
+ORDER_STATUS = "1000"
 
 
 def add_months(dt: datetime, months: int) -> datetime:
@@ -341,6 +342,8 @@ def save_facility_order(
         "OriginFacilityId": origin,
         "DestinationFacilityId": destination_facility_id,
         "OrderType": order_type,
+        "MaximumStatus": ORDER_STATUS,
+        "MinimumStatus": ORDER_STATUS,
         **build_order_schedule(),
         "OrderLine": payload_lines,
     }
