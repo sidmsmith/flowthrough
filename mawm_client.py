@@ -22,8 +22,6 @@ ITEM_SEARCH_URL = f"{HOST}/item-master/api/item-master/item/search"
 ORDER_SAVE_URL = f"{HOST}/dcorder/api/dcorder/order"
 ORDER_SEARCH_URL = f"{HOST}/dcorder/api/dcorder/order/search"
 ORDER_TYPE = "Fast Flow"
-# TODO: Revisit WAVE PIPELINE — MAWM may still default pipeline despite header/line
-# PipelineId and PipelineStatus on save; compare with order_generator payloads.
 PIPELINE_ID = "WAVE PIPELINE"
 PIPELINE_STATUS = "1000"
 ORDER_STATUS = "1000"
@@ -332,7 +330,7 @@ def save_facility_order(
                 "ItemId": line["item_id"],
                 "OrderedQuantity": ordered_qty,
                 "QuantityUomId": line.get("uom") or "UNIT",
-                "PipelineId": PIPELINE_ID,
+                "PipelineId": None,
                 "PipelineStatus": PIPELINE_STATUS,
             }
         )
