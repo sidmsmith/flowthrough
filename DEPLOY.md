@@ -1,6 +1,8 @@
 # Flowthrough — Web App (Vercel)
 
-**Version 1.0.0** — ASN-driven replenishment allocation against MAWM.
+**Version 0.0.1** — ASN-driven replenishment allocation against MAWM.
+
+Live app: [flowthrough.vercel.app](https://flowthrough.vercel.app)
 
 ## Deploy to Vercel
 
@@ -18,6 +20,13 @@ Same as Order Generator:
 
 `MANHATTAN_USAGE_INGEST_SECRET` is **not** used by this app.
 
+### WMS prerequisites
+
+- Demo ASNs **FLOW001**–**FLOW006** created in receiving (see [`data/POSTMAN_README.md`](data/POSTMAN_README.md))
+- ASN must be **In Transit (1000)** before load
+- **Fast Flow** order type configured in MAWM
+- No existing orders for that ASN (`OrderId` like `FLOW-{AsnId}-%`)
+
 ### URL parameters
 
 | Parameter | Effect |
@@ -29,7 +38,7 @@ Same as Order Generator:
 Example:
 
 ```
-https://flowthrough.vercel.app/?Organization=SS-DEMO&Location=SS-DEMO-DM1&AsnId=ASNFLOW001
+https://flowthrough.vercel.app/?Organization=SS-DEMO&Location=SS-DEMO-DM1&AsnId=FLOW001
 ```
 
 ### Local dev
@@ -61,6 +70,7 @@ flowthrough/
 ├── api/index.py
 ├── allocation/
 ├── data/facility_inventory.json
+├── data/postman_asns.json
 ├── flowthrough_service.py
 ├── mawm_client.py
 ├── config_loader.py

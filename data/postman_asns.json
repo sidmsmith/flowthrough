@@ -143,6 +143,37 @@
           }
         ]
       }
+    },
+    {
+      "asn_id": "FLOW006",
+      "items": ["1125145", "1000015"],
+      "shipped_quantity": 160,
+      "highlights": ["multi_line", "default"],
+      "description": "Multi-line: 1125145 qty 25 (mirrors FLOW003 splits) + 1000015 qty 135 (pallet crossdock)",
+      "save_payload": {
+        "AsnId": "FLOW006",
+        "OrgId": "{{ORG}}",
+        "FacilityId": "{{ORG}}-DM1",
+        "DestinationFacilityId": "{{ORG}}-DM1",
+        "AsnLevelId": "ITEM",
+        "AsnOriginTypeId": "P",
+        "EstimatedReceiptDate": "2026-07-04T09:00:00-04:00",
+        "VendorId": "400975",
+        "AsnLine": [
+          {
+            "AsnId": "FLOW006",
+            "ItemId": "1125145",
+            "ShippedQuantity": 25,
+            "QuantityUomId": "UNIT"
+          },
+          {
+            "AsnId": "FLOW006",
+            "ItemId": "1000015",
+            "ShippedQuantity": 135,
+            "QuantityUomId": "UNIT"
+          }
+        ]
+      }
     }
   ]
 }

@@ -143,7 +143,7 @@ def verify_auth(token: str, org: str) -> Tuple[bool, str]:
     Uses the same headers as create_asns / Postman.
     """
     token = normalize_token(token)
-    payload = {"Query": "AsnId ='ASNFLOW001'"}
+    payload = {"Query": "AsnId ='FLOW001'"}
     response = _post(
         ASN_SEARCH_URL,
         headers=build_receiving_headers(token, org),
@@ -309,7 +309,7 @@ def save_facility_order(
     Save one replenishment order for a destination facility.
 
     order_lines: list of dicts with order_line_id, item_id, quantity, uom.
-    OrderId format: FLOW-{AsnId}-{FacilitySuffix} (e.g. FLOW-ASNFLOW005-DM2).
+    OrderId format: FLOW-{AsnId}-{FacilitySuffix} (e.g. FLOW-FLOW005-DM2).
     """
     origin = origin_facility_id or resolve_location(org, location)
     org = org.upper()

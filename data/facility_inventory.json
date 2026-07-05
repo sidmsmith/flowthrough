@@ -361,7 +361,7 @@
     }
   ],
   "asn_hints": {
-    "ASNFLOW001": {
+    "FLOW001": {
       "items": [
         "1000012"
       ],
@@ -373,7 +373,7 @@
       ],
       "description": "ASN 50, shortages 25/40/30 — compare policies; weighted (col 4) gives DM4=0 (see ALLOCATION.md)"
     },
-    "ASNFLOW002": {
+    "FLOW002": {
       "items": [
         "1000013"
       ],
@@ -385,7 +385,7 @@
       ],
       "description": "ASN 60, shortages 8/12/42 — all 4 algos differ: 7/11/42 | 8/12/40 | 6/12/42 | 8/10/42"
     },
-    "ASNFLOW003": {
+    "FLOW003": {
       "items": [
         "1000014"
       ],
@@ -397,7 +397,7 @@
       ],
       "description": "Pack 5, ASN 25 (5 pk) \u2014 shortages 10/12/15; all 4 algos differ: 1/2/2pk | 2/2/1pk | 0/2/3pk | 2/0/3pk"
     },
-    "ASNFLOW004": {
+    "FLOW004": {
       "items": [
         "1000015"
       ],
@@ -408,7 +408,7 @@
       ],
       "description": "Pack 5, pallet 100, ASN 135 \u2014 pallet crossdock + remainder; part default = fixed priority"
     },
-    "ASNFLOW005": {
+    "FLOW005": {
       "items": [
         "1125145",
         "1000015"
@@ -417,7 +417,18 @@
         "multi_line",
         "default"
       ],
-      "description": "Multi-line: line 1 item 1125145 qty 25 (same splits as ASNFLOW003) + line 2 item 1000015 qty 135 (pallet crossdock)"
+      "description": "Multi-line: line 1 item 1125145 qty 25 (same splits as FLOW003) + line 2 item 1000015 qty 135 (pallet crossdock)"
+    },
+    "FLOW006": {
+      "items": [
+        "1125145",
+        "1000015"
+      ],
+      "highlights": [
+        "multi_line",
+        "default"
+      ],
+      "description": "Same multi-line structure as FLOW005 (alternate demo ASN)"
     }
   }
 }
