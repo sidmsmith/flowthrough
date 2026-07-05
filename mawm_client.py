@@ -231,7 +231,7 @@ def search_orders(query: str, token: str, org: str, location: str = None, size: 
 def flow_orders_exist(asn_id: str, token: str, org: str, location: str = None) -> bool:
     """True when any replenishment order exists for FLOW-{asn_id}*."""
     asn_id = (asn_id or "").strip().upper()
-    query = f"OrderId like 'FLOW-{asn_id}%'"
+    query = f"(OrderId _ FLOW-{asn_id}%)"
     return len(search_orders(query, token, org, location=location, size=1)) > 0
 
 
