@@ -36,7 +36,7 @@ let footerActions;
 function status(msg, type) {
   if (!statusEl) return;
   statusEl.textContent = msg;
-  statusEl.className = "status " + (type === "error" ? "text-danger" : type === "success" ? "text-success" : "");
+  statusEl.className = "app-status " + (type === "error" ? "text-danger" : type === "success" ? "text-success" : "");
 }
 
 async function api(action, body, showStatus = false) {
@@ -282,6 +282,7 @@ async function loadAsn(skipPrompt) {
   if (!res.success) {
     setFooterVisible(false);
     asnLoaded = false;
+    status(res.error || res.message || "Failed to load ASN", "error");
     await trackEvent("load_asn_failed", {
       org: getOrg(),
       asn_id: asnId,
@@ -476,7 +477,7 @@ window.addEventListener("load", async () => {
     const el = document.getElementById("status");
     if (el) {
       el.textContent = "Failed to initialize app: " + e.message;
-      el.className = "status text-danger";
+      el.className = "app-status text-danger";
     }
     return;
   }

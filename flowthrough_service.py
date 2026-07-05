@@ -197,10 +197,18 @@ def load_asn_data(org: str, token: str, asn_id: str, location: str = None) -> di
             "error": f"ASN {asn_id} must be In Transit (status 1000). Current status: {label}.",
         }
 
-    if flow_orders_exist(asn_id, token, org, location=location):
+    try:
+        if flow_orders_exist(asn_id, token, org, location=location):
+            return {
+                "success": False,
+                "error": f"Outbound orders already exist for {asn_id}",
+            }
+    except PermissionError:
+        raise
+    except Exception as e:
         return {
             "success": False,
-            "error": f"Outbound orders already exist for {asn_id}",
+            "error": f"Unable to verify existing orders for {asn_id}: {e}",
         }
 
     lines = parse_asn_lines(asn)
