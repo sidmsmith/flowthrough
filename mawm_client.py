@@ -22,9 +22,6 @@ ITEM_SEARCH_URL = f"{HOST}/item-master/api/item-master/item/search"
 ORDER_SAVE_URL = f"{HOST}/dcorder/api/dcorder/order"
 ORDER_SEARCH_URL = f"{HOST}/dcorder/api/dcorder/order/search"
 ORDER_TYPE = "Fast Flow"
-PIPELINE_ID = "WAVE PIPELINE"
-PIPELINE_STATUS = "1000"
-ORDER_STATUS = "1000"
 
 
 def add_months(dt: datetime, months: int) -> datetime:
@@ -314,6 +311,7 @@ def save_facility_order(
     OrderId format: FLOW-{AsnId}-{FacilitySuffix} (e.g. FLOW-ASNFLOW005-DM2).
     """
     origin = origin_facility_id or resolve_location(org, location)
+    org = org.upper()
     order_id = f"FLOW-{asn_id}-{destination_facility_id.split('-')[-1]}"
     payload_lines = []
     for line in order_lines:
@@ -327,21 +325,22 @@ def save_facility_order(
         payload_lines.append(
             {
                 "OrderLineId": str(line["order_line_id"]),
+                "OrderId": order_id,
+                "OrgId": org,
+                "FacilityId": origin,
                 "ItemId": line["item_id"],
                 "OrderedQuantity": ordered_qty,
                 "QuantityUomId": line.get("uom") or "UNIT",
-                "PipelineId": None,
-                "PipelineStatus": PIPELINE_STATUS,
+                "Order": {"OrderId": order_id},
             }
         )
     payload = {
         "OrderId": order_id,
+        "OrgId": org,
+        "FacilityId": origin,
         "OriginFacilityId": origin,
         "DestinationFacilityId": destination_facility_id,
         "OrderType": order_type,
-        "PipelineId": PIPELINE_ID,
-        "MaximumStatus": ORDER_STATUS,
-        "MinimumStatus": ORDER_STATUS,
         **build_order_schedule(),
         "OrderLine": payload_lines,
     }
