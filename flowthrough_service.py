@@ -8,7 +8,14 @@ from allocation.engine import _part_kwargs, resolve_default_algorithm, run_all_a
 from allocation.models import PartParams
 from allocation.need import is_allocatable
 from config_loader import load_config, receiving_facility_id
-from mawm_client import item_uom_quantities, resolve_location, save_facility_order, search_asn, search_items
+from mawm_client import (
+    flow_orders_exist,
+    item_uom_quantities,
+    resolve_location,
+    save_facility_order,
+    search_asn,
+    search_items,
+)
 from order_builder import (
     accumulate_line_allocations,
     build_order_id,
@@ -155,11 +162,46 @@ def asn_header_payload(asn: dict, line_count: int) -> dict:
     }
 
 
+REQUIRED_ASN_STATUS = 1000
+
+_ASN_STATUS_LABELS = {
+    0: "Un-Shipped",
+    1000: "In Transit",
+    2000: "Unloaded",
+    3000: "In Receiving",
+    8000: "Verified",
+    9000: "Cancelled",
+}
+
+
+def _asn_status_code(asn: dict):
+    raw = asn.get("AsnStatus") if asn.get("AsnStatus") is not None else asn.get("asnStatus")
+    try:
+        return int(raw)
+    except (TypeError, ValueError):
+        return None
+
+
 def load_asn_data(org: str, token: str, asn_id: str, location: str = None) -> dict:
     config = load_config()
+    asn_id = (asn_id or "").strip().upper()
     asn = search_asn(asn_id, token, org, location=location)
     if not asn:
         return {"success": False, "error": f"ASN not found: {asn_id}"}
+
+    status_code = _asn_status_code(asn)
+    if status_code != REQUIRED_ASN_STATUS:
+        label = _ASN_STATUS_LABELS.get(status_code, str(status_code if status_code is not None else "—"))
+        return {
+            "success": False,
+            "error": f"ASN {asn_id} must be In Transit (status 1000). Current status: {label}.",
+        }
+
+    if flow_orders_exist(asn_id, token, org, location=location):
+        return {
+            "success": False,
+            "error": f"Outbound orders already exist for {asn_id}",
+        }
 
     lines = parse_asn_lines(asn)
     if not lines:

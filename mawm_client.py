@@ -20,6 +20,7 @@ ASN_SEARCH_URL = f"{HOST}/receiving/api/receiving/asn/search"
 ASN_SAVE_URL = f"{HOST}/receiving/api/receiving/asn/save"
 ITEM_SEARCH_URL = f"{HOST}/item-master/api/item-master/item/search"
 ORDER_SAVE_URL = f"{HOST}/dcorder/api/dcorder/order"
+ORDER_SEARCH_URL = f"{HOST}/dcorder/api/dcorder/order/search"
 ORDER_TYPE = "Fast Flow"
 # TODO: Revisit WAVE PIPELINE — MAWM may still default pipeline despite header/line
 # PipelineId and PipelineStatus on save; compare with order_generator payloads.
@@ -195,6 +196,43 @@ def search_asn(asn_id: str, token: str, org: str, location: str = None) -> Optio
         body = response.json()
         data = body.get("data") or body.get("Data") or []
     return data[0] if data else None
+
+
+def _response_data_list(body: dict) -> List[dict]:
+    data = body.get("data") or body.get("Data") or []
+    return data if isinstance(data, list) else []
+
+
+def search_orders(query: str, token: str, org: str, location: str = None, size: int = 1) -> List[dict]:
+    """Search dc orders; returns matching order header rows."""
+    token = normalize_token(token)
+    origin = resolve_location(org, location)
+    payload = {
+        "Query": query,
+        "Page": 0,
+        "Size": size,
+        "Template": {"OrderId": ""},
+    }
+    response = _post(
+        ORDER_SEARCH_URL,
+        headers=build_order_headers(token, org, origin),
+        json=payload,
+    )
+    if response.status_code in (401, 403):
+        raise PermissionError(
+            f"Order search rejected ({response.status_code}). "
+            f"Response: {response.text[:500]}"
+        )
+    if response.status_code != 200:
+        raise RuntimeError(f"Order search failed: {response.status_code} {response.text[:500]}")
+    return _response_data_list(response.json())
+
+
+def flow_orders_exist(asn_id: str, token: str, org: str, location: str = None) -> bool:
+    """True when any replenishment order exists for FLOW-{asn_id}*."""
+    asn_id = (asn_id or "").strip().upper()
+    query = f"OrderId like 'FLOW-{asn_id}%'"
+    return len(search_orders(query, token, org, location=location, size=1)) > 0
 
 
 def save_asn(payload: dict, token: str, org: str) -> requests.Response:
