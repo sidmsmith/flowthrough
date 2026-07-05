@@ -26,6 +26,7 @@ ORDER_TYPE = "Fast Flow"
 # PipelineId and PipelineStatus on save; compare with order_generator payloads.
 PIPELINE_ID = "WAVE PIPELINE"
 PIPELINE_STATUS = "1000"
+ORDER_STATUS = "1000"
 
 
 def add_months(dt: datetime, months: int) -> datetime:
@@ -341,6 +342,8 @@ def save_facility_order(
         "DestinationFacilityId": destination_facility_id,
         "OrderType": order_type,
         "PipelineId": PIPELINE_ID,
+        "MaximumStatus": ORDER_STATUS,
+        "MinimumStatus": ORDER_STATUS,
         **build_order_schedule(),
         "OrderLine": payload_lines,
     }
