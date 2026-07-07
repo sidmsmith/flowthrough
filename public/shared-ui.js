@@ -210,16 +210,18 @@ function renderLineBadges(line) {
 function renderLinePanel(line, selectedKey, idPrefix) {
   const selId = `${idPrefix}-algo-${line.lineNum}`;
   const headerImage = renderLineHeaderImage(line);
-  const headerMainClass = headerImage ? "line-header-main line-header-main--with-image" : "line-header-main";
+  const copyClass = headerImage ? "line-header-copy line-header-copy--with-image" : "line-header-copy";
   return `
     <div class="card-panel line-panel" data-line="${line.lineNum}">
       <div class="line-header-row">
-        <div class="${headerMainClass}">
-          <div class="line-header-body">
-            <h2>Line ${line.lineNum} — ${renderItemTitle(line)}</h2>
-            <div class="line-badges">${renderLineBadges(line)}</div>
+        <div class="line-header-main">
+          <div class="${copyClass}">
+            <div class="line-header-body">
+              <h2>Line ${line.lineNum} — ${renderItemTitle(line)}</h2>
+              <div class="line-badges">${renderLineBadges(line)}</div>
+            </div>
+            ${headerImage}
           </div>
-          ${headerImage}
         </div>
         <div class="line-algo-picker">
           <label class="form-label" for="${selId}">Apply Algorithm for This Line</label>

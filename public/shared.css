@@ -302,14 +302,19 @@ html.theme-manhattan .form-label,
   min-width: 220px;
 }
 
-.line-header-main--with-image {
-  display: flex;
-  align-items: stretch;
+.line-header-copy {
+  display: inline-flex;
+  align-items: flex-end;
   gap: 1rem;
+  max-width: 100%;
+}
+
+.line-header-copy--with-image {
+  flex-wrap: wrap;
 }
 
 .line-header-body {
-  flex: 1;
+  flex: 0 1 auto;
   min-width: 0;
 }
 
@@ -662,9 +667,10 @@ table.ft-table th.col-selected-h {
 }
 
 .item-image-wrap--header {
-  align-self: stretch;
+  align-self: flex-end;
   max-height: 5.5rem;
   max-width: 5.5rem;
+  margin-bottom: 0.1rem;
 }
 
 .item-image-wrap--header .item-image-thumb {
