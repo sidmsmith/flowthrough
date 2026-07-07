@@ -7,6 +7,7 @@ from allocation.algorithms import POLICY_KEYS
 from allocation.engine import _part_kwargs, resolve_default_algorithm, run_all_algorithms
 from allocation.models import PartParams
 from allocation.need import is_allocatable
+from explanation.builder import build_line_explanations
 from config_loader import load_config, receiving_facility_id, resolve_facility
 from mawm_client import (
     flow_orders_exist,
@@ -176,6 +177,8 @@ def _line_ui_payload(
         p = needs[0].pallet_qty
         pallet_display = int(p) if p == p.to_integral_value() else float(p)
 
+    explanations = build_line_explanations(needs, results)
+
     return {
         "lineNum": line_num,
         "itemId": item_id,
@@ -189,6 +192,7 @@ def _line_ui_payload(
         "policies": policies,
         "units": units,
         "residual": residual,
+        "explanations": explanations,
         "_facility_order": facility_order,
     }
 

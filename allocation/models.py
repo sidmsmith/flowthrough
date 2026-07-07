@@ -40,6 +40,7 @@ class AllocationResult:
     residual_qty: Decimal = Decimal("0")
     crossdock_recommendations: List[dict] = field(default_factory=list)
     notes: List[str] = field(default_factory=list)
+    trace: Optional[dict] = None
 
     def to_dict(self):
         return {
@@ -48,4 +49,5 @@ class AllocationResult:
             "residual_qty": str(self.residual_qty),
             "crossdock_recommendations": self.crossdock_recommendations,
             "notes": self.notes,
+            "trace": self.trace,
         }

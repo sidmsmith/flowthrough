@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json({ limit: "10mb" }));
 
 // Static assets (public/ is served by Vercel CDN before rewrites; explicit routes for serverless)
-const STATIC_ASSETS = ["shared.css", "shared-ui.js", "app.js"];
+const STATIC_ASSETS = ["shared.css", "shared-ui.js", "algo-explainer.js", "app.js"];
 STATIC_ASSETS.forEach((file) => {
   app.get("/" + file, (req, res, next) => {
     const publicPath = path.join(__dirname, "public", file);

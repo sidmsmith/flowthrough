@@ -336,6 +336,86 @@ html.theme-manhattan .form-label,
   white-space: nowrap;
 }
 
+/* Algorithm explanation tooltips */
+.algo-expl-cell { cursor: help; }
+
+.algo-explainer {
+  position: fixed;
+  z-index: 1080;
+  max-width: min(22rem, calc(100vw - 1.5rem));
+  padding: 0.85rem 1rem;
+  background: #1e2230;
+  border: 1px solid var(--primary);
+  border-radius: 10px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  font-size: 0.875rem;
+  line-height: 1.45;
+  pointer-events: auto;
+}
+
+.algo-explainer::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 14px;
+  top: -14px;
+}
+
+.algo-explainer.algo-explainer-above::before {
+  top: auto;
+  bottom: -14px;
+}
+
+.algo-explainer-scope {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--primary);
+  margin-bottom: 0.4rem;
+}
+
+.algo-explainer-summary {
+  margin: 0 0 0.5rem;
+  color: var(--text);
+}
+
+.algo-explainer-details {
+  margin: 0.35rem 0 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.algo-explainer-details summary {
+  cursor: pointer;
+  color: var(--text);
+  user-select: none;
+}
+
+.algo-explainer-details ul {
+  margin: 0.4rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.algo-explainer-details li {
+  margin-bottom: 0.25rem;
+}
+
+.algo-explainer-foot {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  padding-top: 0.45rem;
+  margin-top: 0.35rem;
+}
+
+.algo-explainer-empty {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
 .line-algo-picker {
   flex: 0 0 auto;
   max-width: 100%;

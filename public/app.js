@@ -459,6 +459,7 @@ function initApp() {
 
   bindFacilityToggle(previewWrapper, refreshActiveView);
   bindAlgoColumnPick(previewWrapper, selections, onSelectionsChange);
+  bindAlgoExplainer(previewWrapper);
 
   loadBtn.addEventListener("click", () => loadAsn());
   asnInput.addEventListener("keydown", (e) => {

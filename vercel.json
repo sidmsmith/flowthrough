@@ -23,7 +23,7 @@
   ],
   "headers": [
     {
-      "source": "/(shared-ui|app)\\.js",
+      "source": "/(shared-ui|app|algo-explainer)\\.js",
       "headers": [
         {
           "key": "Cache-Control",

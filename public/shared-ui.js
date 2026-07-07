@@ -130,8 +130,7 @@ function renderComparisonTable(line, selectedKey) {
   const facilities = visibleNeeds(line).map((n) => n.facility);
   const policyHeaders = ALGO_OPTIONS.map((o) => {
     const mark = o.key === line.defaultAlgo ? "*" : "";
-    const defaultTitle = o.key === line.defaultAlgo ? " (default for this item)" : "";
-    return `<th class="${policyColClass(o.key)} algo-pick-cell${o.key === selectedKey ? " col-selected-h" : ""}" data-algo="${o.key}" role="button" tabindex="0" title="Apply ${o.label}${defaultTitle}">${o.label}${mark}</th>`;
+    return `<th class="${policyColClass(o.key)} algo-pick-cell algo-expl-cell${o.key === selectedKey ? " col-selected-h" : ""}" data-algo="${o.key}" data-line="${line.lineNum}" role="button" tabindex="0">${o.label}${mark}</th>`;
   }).join("");
 
   const bodyRows = facilities
@@ -141,7 +140,7 @@ function renderComparisonTable(line, selectedKey) {
       const cells = ALGO_OPTIONS.map((o) => {
         const val = line.policies[o.key]?.[fac] ?? "0";
         const sel = o.key === selectedKey ? " cell-selected" : "";
-        return `<td class="${policyColClass(o.key)} algo-pick-cell${sel}" data-algo="${o.key}" role="button" tabindex="0" title="Apply ${o.label}">${val}</td>`;
+        return `<td class="${policyColClass(o.key)} algo-pick-cell algo-expl-cell${sel}" data-algo="${o.key}" data-line="${line.lineNum}" data-facility="${fac}" role="button" tabindex="0">${val}</td>`;
       }).join("");
       const shortage = need?.shortage ?? 0;
       const selectedUnits = line.units[selectedKey]?.[fac] ?? 0;
@@ -206,7 +205,9 @@ function renderLinePanel(line, selectedKey, idPrefix) {
       </div>
       ${renderFacilityNeedHeader(line)}
       ${renderNeedTable(line)}
-      <h6 class="form-label mt-3 mb-2">Algorithm comparison <span class="text-muted fw-normal">(click a column to apply)</span></h6>
+      <h6 class="form-label mt-3 mb-2">Algorithm comparison
+        <span class="text-muted fw-normal">(click a column to apply · hover for why)</span>
+      </h6>
       ${renderComparisonTable(line, selectedKey)}
     </div>`;
 }
