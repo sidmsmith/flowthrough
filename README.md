@@ -66,7 +66,7 @@ python run_flowthrough.py --mode apply --asn FLOW001
 
 Multi-line ASNs (e.g. **FLOW005**, **FLOW006**) allocate each line independently; column 5 resolves to that line's part default.
 
-See **[ALLOCATION.md](ALLOCATION.md)** for pallet pass, remainder logic, all four policies, and a **weighted score walkthrough** (FLOW001).
+See **[ALGORITHMS.md](ALGORITHMS.md)** for all policies with FLOW001–006 examples. See **[ALLOCATION.md](ALLOCATION.md)** for pallet/remainder design notes.
 
 ## Demo workflow
 
@@ -88,6 +88,7 @@ Preview layout explorations — **no API, no Vercel**. Open [`samples/index.html
 | `data/facility_inventory.json` | Inventory, pack/pallet, **`default_algorithm` per part** |
 | `data/postman_asns.json` | ASN save payloads for create_asns / Postman |
 | `data/postman_order_FLOW005.json` | Sample replenishment order payloads (Postman) |
+| `ALGORITHMS.md` | All allocation policies with FLOW001–006 worked examples |
 | `ALLOCATION.md` | Policies, pallet/remainder logic, weighted score walkthrough (FLOW001) |
 | `runs/` | Audit JSON from each run_flowthrough execution |
 
