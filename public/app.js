@@ -155,7 +155,7 @@ function renderNav() {
         : "";
       return `<button type="button" class="line-nav-item${active}" data-line="${line.lineNum}">
         <strong>Line ${line.lineNum}</strong><br>
-        <span class="small">${escapeHtml(line.itemId)} · qty ${line.qty}</span><br>
+        <span class="small">${escapeHtml(line.itemId)} · Qty ${line.qty}</span><br>
         ${descHtml}
         <span class="small text-muted">${label}</span>
       </button>`;
