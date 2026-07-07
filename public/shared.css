@@ -312,7 +312,6 @@ html.theme-manhattan .form-label,
 
 .item-description {
   font-weight: 400;
-  font-size: 0.82em;
   color: var(--text-muted);
 }
 
@@ -329,7 +328,6 @@ html.theme-manhattan .form-label,
 .line-nav-desc {
   max-width: 100%;
   color: var(--text-muted);
-  font-size: 0.78rem;
   line-height: 1.25;
   margin-top: 0.1rem;
 }

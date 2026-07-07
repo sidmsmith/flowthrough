@@ -151,7 +151,7 @@ function renderNav() {
       const active = line.lineNum === activeLine ? " active" : "";
       const desc = (line.itemDescription || "").trim();
       const descHtml = desc
-        ? `<span class="line-nav-desc" title="${escapeHtml(desc)}">${truncateWithTooltip(desc, 42)}</span><br>`
+        ? `<span class="small line-nav-desc" title="${escapeHtml(desc)}">${truncateWithTooltip(desc, 42)}</span><br>`
         : "";
       return `<button type="button" class="line-nav-item${active}" data-line="${line.lineNum}">
         <strong>Line ${line.lineNum}</strong><br>
