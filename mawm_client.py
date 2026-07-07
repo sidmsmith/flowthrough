@@ -254,6 +254,7 @@ def search_items(item_ids: List[str], token: str, org: str, location: str = None
         "Template": {
             "ItemId": "",
             "Description": "",
+            "ImageUrl": "",
             "StandardPackQuantity": "",
             "StandardLpnQuantity": "",
             "ItemPackage": [

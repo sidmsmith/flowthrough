@@ -94,11 +94,29 @@ function truncateWithTooltip(text, maxLen = 48) {
   return `<span class="truncate-text" title="${full}">${escapeHtml(t.slice(0, maxLen - 1))}…</span>`;
 }
 
+function itemImageUrl(line) {
+  return (line.itemImageUrl || "").trim();
+}
+
+function renderItemImage(url, variant) {
+  const src = (url || "").trim();
+  if (!src) return "";
+  const safe = escapeHtml(src);
+  return `<span class="item-image-wrap item-image-wrap--${variant}" data-image-url="${safe}">
+    <img class="item-image-thumb" src="${safe}" alt="" loading="lazy" decoding="async"
+      onerror="this.closest('.item-image-wrap')?.remove()" />
+  </span>`;
+}
+
 function renderItemTitle(line, maxDescLen = 56) {
   const idPart = `Part ${escapeHtml(line.itemId)}`;
   const desc = (line.itemDescription || "").trim();
   if (!desc) return idPart;
   return `${idPart} <span class="item-description">${truncateWithTooltip(desc, maxDescLen)}</span>`;
+}
+
+function renderLineHeaderImage(line) {
+  return renderItemImage(itemImageUrl(line), "header");
 }
 
 function renderNeedTable(line) {
@@ -191,12 +209,17 @@ function renderLineBadges(line) {
 
 function renderLinePanel(line, selectedKey, idPrefix) {
   const selId = `${idPrefix}-algo-${line.lineNum}`;
+  const headerImage = renderLineHeaderImage(line);
+  const headerMainClass = headerImage ? "line-header-main line-header-main--with-image" : "line-header-main";
   return `
     <div class="card-panel line-panel" data-line="${line.lineNum}">
       <div class="line-header-row">
-        <div class="line-header-main">
-          <h2>Line ${line.lineNum} — ${renderItemTitle(line)}</h2>
-          <div class="line-badges">${renderLineBadges(line)}</div>
+        <div class="${headerMainClass}">
+          <div class="line-header-body">
+            <h2>Line ${line.lineNum} — ${renderItemTitle(line)}</h2>
+            <div class="line-badges">${renderLineBadges(line)}</div>
+          </div>
+          ${headerImage}
         </div>
         <div class="line-algo-picker">
           <label class="form-label" for="${selId}">Apply Algorithm for This Line</label>

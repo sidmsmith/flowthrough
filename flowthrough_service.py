@@ -85,6 +85,10 @@ def _item_description(item: dict) -> str:
     return (item.get("Description") or item.get("description") or "").strip()
 
 
+def _item_image_url(item: dict) -> str:
+    return (item.get("ImageUrl") or item.get("imageUrl") or "").strip()
+
+
 def _format_facility_label(suffix: str, city: Optional[str]) -> str:
     if city:
         return f"{suffix} - {city.upper()}"
@@ -143,6 +147,7 @@ def _line_ui_payload(
 ) -> dict:
     item = item_lookup.get(item_id, {})
     item_description = _item_description(item)
+    item_image_url = _item_image_url(item)
     pack, pallet = item_uom_quantities(item)
     part = _part_for_item(config, item_id)
     default_key = resolve_default_algorithm(part, config)
@@ -183,6 +188,7 @@ def _line_ui_payload(
         "lineNum": line_num,
         "itemId": item_id,
         "itemDescription": item_description,
+        "itemImageUrl": item_image_url,
         "qty": int(asn_qty) if asn_qty == asn_qty.to_integral_value() else float(asn_qty),
         "uom": uom,
         "packQty": pack_display,

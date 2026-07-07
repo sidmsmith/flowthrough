@@ -153,7 +153,10 @@ function renderNav() {
       const descHtml = desc
         ? `<span class="small line-nav-desc" title="${escapeHtml(desc)}">${truncateWithTooltip(desc, 42)}</span><br>`
         : "";
-      return `<button type="button" class="line-nav-item${active}" data-line="${line.lineNum}">
+      const navImage = renderItemImage(itemImageUrl(line), "nav");
+      const navClass = navImage ? " line-nav-item--with-image" : "";
+      return `<button type="button" class="line-nav-item${active}${navClass}" data-line="${line.lineNum}">
+        ${navImage}
         <strong>Line ${line.lineNum}</strong><br>
         <span class="small">${escapeHtml(line.itemId)} · Qty ${line.qty}</span><br>
         ${descHtml}
@@ -460,6 +463,7 @@ function initApp() {
   bindFacilityToggle(previewWrapper, refreshActiveView);
   bindAlgoColumnPick(previewWrapper, selections, onSelectionsChange);
   bindAlgoExplainer(previewWrapper);
+  bindItemImagePreview(previewWrapper);
 
   loadBtn.addEventListener("click", () => loadAsn());
   asnInput.addEventListener("keydown", (e) => {

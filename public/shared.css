@@ -302,6 +302,17 @@ html.theme-manhattan .form-label,
   min-width: 220px;
 }
 
+.line-header-main--with-image {
+  display: flex;
+  align-items: stretch;
+  gap: 1rem;
+}
+
+.line-header-body {
+  flex: 1;
+  min-width: 0;
+}
+
 .line-header-main h2 {
   margin-bottom: 0.5rem;
   display: flex;
@@ -634,6 +645,76 @@ table.ft-table th.col-selected-h {
   margin-bottom: 0.5rem;
   color: var(--text);
   cursor: pointer;
+  position: relative;
+}
+
+.line-nav-item--with-image {
+  padding-right: 4.25rem;
+}
+
+.item-image-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  cursor: zoom-in;
+}
+
+.item-image-wrap--header {
+  align-self: stretch;
+  max-height: 5.5rem;
+  max-width: 5.5rem;
+}
+
+.item-image-wrap--header .item-image-thumb {
+  height: 100%;
+  max-height: 5.5rem;
+  width: auto;
+  max-width: 5.5rem;
+  object-fit: contain;
+  display: block;
+}
+
+.item-image-wrap--nav {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 3rem;
+  height: 3rem;
+}
+
+.item-image-wrap--nav .item-image-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.item-image-preview {
+  position: fixed;
+  z-index: 1080;
+  pointer-events: auto;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.5rem;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);
+  max-width: min(360px, calc(100vw - 16px));
+  max-height: min(360px, calc(100vh - 16px));
+}
+
+.item-image-preview.hidden {
+  display: none;
+}
+
+.item-image-preview-img {
+  display: block;
+  max-width: min(340px, calc(100vw - 32px));
+  max-height: min(340px, calc(100vh - 32px));
+  width: auto;
+  height: auto;
+  object-fit: contain;
 }
 
 .line-nav-item:hover { border-color: var(--primary); }
