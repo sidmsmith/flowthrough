@@ -82,11 +82,30 @@ function policyColClass(key) {
   return map[key] || "";
 }
 
+function facilityLabel(need) {
+  return need?.facilityLabel || need?.facility || "";
+}
+
+function truncateWithTooltip(text, maxLen = 48) {
+  if (!text) return "";
+  const t = String(text);
+  if (t.length <= maxLen) return escapeHtml(t);
+  const full = escapeHtml(t);
+  return `<span class="truncate-text" title="${full}">${escapeHtml(t.slice(0, maxLen - 1))}…</span>`;
+}
+
+function renderItemTitle(line, maxDescLen = 56) {
+  const idPart = `Item ${escapeHtml(line.itemId)}`;
+  const desc = (line.itemDescription || "").trim();
+  if (!desc) return idPart;
+  return `${idPart} <span class="item-description">${truncateWithTooltip(desc, maxDescLen)}</span>`;
+}
+
 function renderNeedTable(line) {
   const rows = visibleNeeds(line)
     .map(
       (n) => `<tr class="${needRowClass(n)}">
-        <td>${n.facility}</td>
+        <td>${escapeHtml(facilityLabel(n))}</td>
         <td>${n.position}</td>
         <td>${n.shortage}</td>
         <td>${n.max}</td>
@@ -133,7 +152,7 @@ function renderComparisonTable(line, selectedKey) {
              <div class="alloc-bar-label">${selectedUnits} of ${shortage} shortage</div>`
           : `<div class="alloc-bar-label">—</div>`;
       return `<tr class="${ex}">
-        <td>${fac}</td>
+        <td>${escapeHtml(facilityLabel(need))}</td>
         <td>${shortage}</td>
         <td>${need?.max ?? 0}</td>
         ${cells}
@@ -177,7 +196,7 @@ function renderLinePanel(line, selectedKey, idPrefix) {
     <div class="card-panel line-panel" data-line="${line.lineNum}">
       <div class="line-header-row">
         <div class="line-header-main">
-          <h2>Line ${line.lineNum} — Item ${line.itemId}</h2>
+          <h2>Line ${line.lineNum} — ${renderItemTitle(line)}</h2>
           <div class="line-badges">${renderLineBadges(line)}</div>
         </div>
         <div class="line-algo-picker">

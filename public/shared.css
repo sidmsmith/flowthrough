@@ -304,6 +304,38 @@ html.theme-manhattan .form-label,
 
 .line-header-main h2 {
   margin-bottom: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.item-description {
+  font-weight: 400;
+  font-size: 0.82em;
+  color: var(--text-muted);
+}
+
+.truncate-text,
+.line-nav-desc {
+  max-width: min(28rem, 100%);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+.line-nav-desc {
+  max-width: 100%;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.25;
+  margin-top: 0.1rem;
+}
+
+.ft-table td:first-child {
+  white-space: nowrap;
 }
 
 .line-algo-picker {

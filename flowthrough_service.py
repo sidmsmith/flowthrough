@@ -7,13 +7,14 @@ from allocation.algorithms import POLICY_KEYS
 from allocation.engine import _part_kwargs, resolve_default_algorithm, run_all_algorithms
 from allocation.models import PartParams
 from allocation.need import is_allocatable
-from config_loader import load_config, receiving_facility_id
+from config_loader import load_config, receiving_facility_id, resolve_facility
 from mawm_client import (
     flow_orders_exist,
     item_uom_quantities,
     resolve_location,
     save_facility_order,
     search_asn,
+    search_facilities,
     search_items,
 )
 from order_builder import (
@@ -79,9 +80,46 @@ def _part_for_item(config: dict, item_id: str) -> Optional[PartParams]:
     return PartParams(**_part_kwargs(part_row))
 
 
-def _need_row(n) -> dict:
+def _item_description(item: dict) -> str:
+    return (item.get("Description") or item.get("description") or "").strip()
+
+
+def _format_facility_label(suffix: str, city: Optional[str]) -> str:
+    if city:
+        return f"{suffix} - {city.upper()}"
+    return suffix
+
+
+def _config_facility_ids(org: str, config: dict) -> List[str]:
+    """Full facility ids from JSON suffixes: {ORG}-{facility_id}."""
+    org = org.upper()
+    ids = set()
+    recv = config.get("receiving_facility", "DM1")
+    ids.add(resolve_facility(org, recv))
+    for fac in config.get("facilities", []):
+        suffix = fac.get("facility_id")
+        if suffix:
+            ids.add(resolve_facility(org, suffix))
+    return sorted(ids)
+
+
+def _facility_cities_by_suffix(
+    org: str, config: dict, token: str, location: str = None
+) -> Dict[str, str]:
+    facility_ids = _config_facility_ids(org, config)
+    city_by_fid = search_facilities(facility_ids, token, org, location=location)
+    by_suffix: Dict[str, str] = {}
+    for fid, city in city_by_fid.items():
+        suffix = fid.split("-")[-1] if "-" in fid else fid
+        by_suffix[suffix] = city.upper()
+    return by_suffix
+
+
+def _need_row(n, facility_cities: Dict[str, str]) -> dict:
+    city = facility_cities.get(n.facility_suffix)
     return {
         "facility": n.facility_suffix,
+        "facilityLabel": _format_facility_label(n.facility_suffix, city),
         "position": int(n.inventory_position) if n.inventory_position == n.inventory_position.to_integral_value() else float(n.inventory_position),
         "shortage": int(n.shortage) if n.shortage == n.shortage.to_integral_value() else float(n.shortage),
         "max": int(n.max_qty) if n.max_qty == n.max_qty.to_integral_value() else float(n.max_qty),
@@ -100,8 +138,10 @@ def _line_ui_payload(
     org: str,
     config: dict,
     item_lookup: dict,
+    facility_cities: Dict[str, str],
 ) -> dict:
     item = item_lookup.get(item_id, {})
+    item_description = _item_description(item)
     pack, pallet = item_uom_quantities(item)
     part = _part_for_item(config, item_id)
     default_key = resolve_default_algorithm(part, config)
@@ -139,12 +179,13 @@ def _line_ui_payload(
     return {
         "lineNum": line_num,
         "itemId": item_id,
+        "itemDescription": item_description,
         "qty": int(asn_qty) if asn_qty == asn_qty.to_integral_value() else float(asn_qty),
         "uom": uom,
         "packQty": pack_display,
         "palletQty": pallet_display,
         "defaultAlgo": default_key,
-        "needs": [_need_row(n) for n in needs],
+        "needs": [_need_row(n, facility_cities) for n in needs],
         "policies": policies,
         "units": units,
         "residual": residual,
@@ -216,6 +257,7 @@ def load_asn_data(org: str, token: str, asn_id: str, location: str = None) -> di
         return {"success": False, "error": "ASN has no lines with ItemId / ShippedQuantity."}
 
     item_lookup = search_items([ln["item_id"] for ln in lines], token, org, location=location)
+    facility_cities = _facility_cities_by_suffix(org, config, token, location=location)
     ui_lines = []
     for i, line in enumerate(lines, start=1):
         ui_lines.append(
@@ -227,6 +269,7 @@ def load_asn_data(org: str, token: str, asn_id: str, location: str = None) -> di
                 org,
                 config,
                 item_lookup,
+                facility_cities,
             )
         )
 

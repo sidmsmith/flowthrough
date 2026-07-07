@@ -19,6 +19,7 @@ AUTH_HOST = os.getenv("MANHATTAN_AUTH_HOST", "salep-auth.sce.manh.com")
 ASN_SEARCH_URL = f"{HOST}/receiving/api/receiving/asn/search"
 ASN_SAVE_URL = f"{HOST}/receiving/api/receiving/asn/save"
 ITEM_SEARCH_URL = f"{HOST}/item-master/api/item-master/item/search"
+FACILITY_SEARCH_URL = f"{HOST}/facility/api/facility/facility/search"
 ORDER_SAVE_URL = f"{HOST}/dcorder/api/dcorder/order"
 ORDER_SEARCH_URL = f"{HOST}/dcorder/api/dcorder/order/search"
 ORDER_TYPE = "Fast Flow"
@@ -252,6 +253,7 @@ def search_items(item_ids: List[str], token: str, org: str, location: str = None
         "Size": max(len(clean), 50),
         "Template": {
             "ItemId": "",
+            "Description": "",
             "StandardPackQuantity": "",
             "StandardLpnQuantity": "",
             "ItemPackage": [
@@ -277,6 +279,49 @@ def search_items(item_ids: List[str], token: str, org: str, location: str = None
     body = response.json()
     data = body.get("data") or body.get("Data") or [] if isinstance(body, dict) else []
     return {str(item.get("ItemId")): item for item in data if item.get("ItemId")}
+
+
+def search_facilities(
+    facility_ids: List[str], token: str, org: str, location: str = None
+) -> Dict[str, str]:
+    """Resolve full FacilityIds to city names via Facility Master search."""
+    clean = []
+    for fid in facility_ids:
+        fid = str(fid).strip().upper()
+        if fid:
+            clean.append(fid)
+    if not clean:
+        return {}
+    in_clause = ", ".join(f"'{fid.replace(chr(39), chr(39) + chr(39))}'" for fid in clean)
+    payload = {
+        "Query": f"FacilityId in ({in_clause})",
+        "Size": max(len(clean), 50),
+        "Template": {
+            "FacilityId": None,
+            "FacilityAddress": {"City": None},
+        },
+    }
+    headers = build_receiving_headers(token, org, location=location)
+    try:
+        response = _post(FACILITY_SEARCH_URL, headers=headers, json=payload)
+    except requests.RequestException as exc:
+        print(f"Warning: facility search failed: {exc}")
+        return {}
+    if response.status_code != 200:
+        print(f"Warning: facility search failed: {response.status_code}")
+        return {}
+    body = response.json()
+    data = body.get("data") or body.get("Data") or [] if isinstance(body, dict) else []
+    result: Dict[str, str] = {}
+    for fac in data:
+        fid = fac.get("FacilityId")
+        if not fid:
+            continue
+        addr = fac.get("FacilityAddress") or {}
+        city = (addr.get("City") or "").strip()
+        if city:
+            result[str(fid).upper()] = city
+    return result
 
 
 def item_uom_quantities(item: dict):
