@@ -95,7 +95,7 @@ function truncateWithTooltip(text, maxLen = 48) {
 }
 
 function renderItemTitle(line, maxDescLen = 56) {
-  const idPart = `Item ${escapeHtml(line.itemId)}`;
+  const idPart = `Part ${escapeHtml(line.itemId)}`;
   const desc = (line.itemDescription || "").trim();
   if (!desc) return idPart;
   return `${idPart} <span class="item-description">${truncateWithTooltip(desc, maxDescLen)}</span>`;
@@ -180,7 +180,7 @@ function renderComparisonTable(line, selectedKey) {
 }
 
 function renderLineBadges(line) {
-  const parts = [`<span class="text-muted">ASN qty ${line.qty} ${line.uom}</span>`];
+  const parts = [`<span class="text-muted">ASN Qty ${line.qty} ${line.uom}</span>`];
   if (line.packQty) {
     parts.push(`<span class="badge-pill badge-pack"><i class="fa-solid fa-box"></i> Pack ${line.packQty}</span>`);
   }
