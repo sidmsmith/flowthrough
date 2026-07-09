@@ -120,7 +120,16 @@ function getLocation() {
 }
 
 function currentView() {
-  return viewSelect.value === "2" ? "main" : "stacked";
+  return viewSelect.value === "1" ? "main" : "stacked";
+}
+
+function defaultViewValueForLineCount(lineCount) {
+  return lineCount > 1 ? "1" : "2";
+}
+
+function applyDefaultViewForAsn(lineCount) {
+  viewSelect.value = defaultViewValueForLineCount(lineCount);
+  applyViewMode();
 }
 
 function applyViewMode() {
@@ -317,6 +326,8 @@ async function loadAsn(skipPrompt) {
   asnLoaded = true;
   activeLine = 1;
   setFooterVisible(true);
+
+  applyDefaultViewForAsn(res.lines.length);
 
   await refreshPreviewCount();
   refreshActiveView();
